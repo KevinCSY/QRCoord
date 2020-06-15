@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">QRCoord</string>
     <string name="title_location_permission">Request GPS location</string>
-    <string name="text_location_permission">Need to request GPS location</string>
-    <string name="ok">OK</string>
-    <string name="submit">submit</string>
+    <string name="text_location_permission">Need permission to retrieve GPS coordinates</string>
+    <string name="button_confirm">OK</string>
+    <string name="button_submit">submit</string>
 </resources>

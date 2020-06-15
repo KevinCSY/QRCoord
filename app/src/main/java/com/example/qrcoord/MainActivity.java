@@ -18,11 +18,19 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int REQUEST_PERMISSION_LOCATION = 1;
+
+    private double latitude;
+    private double longitude;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final Button b_Submit = findViewById(R.id.submit);
         b_Submit.setOnClickListener(this);
+
+        mDatabase = FirebaseDatabase.getInstance();
+
     }
 
     public void onClick(View v) {
@@ -40,13 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                // Show explanation of permission request
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.title_location_permission)
                         .setMessage(R.string.text_location_permission)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
@@ -57,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         })
                         .create()
                         .show();
-
 
             } else {
                 // No explanation needed, we can request the permission.
@@ -76,13 +84,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onSuccess(Location location) {
                     if( location != null ) {
                         // Implementation
-                        Log.d("GPSSUCCESS",location.getLatitude() + " " + location.getLongitude());
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        Log.d("GPSSUCCESS",latitude + " " + longitude);
                     }
                     else {
                         Log.d("GPSFAIL", "Could not retrieve coordinates");
                     }
                 }
             });
+
+            mReference = mDatabase.getReference().push();
+            mReference.child("Latitude").setValue(latitude);
+            mReference.child("Longitude").setValue(longitude);
+
             // Generate QR code to store
 
         }
