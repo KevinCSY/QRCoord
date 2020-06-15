@@ -26,11 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final int REQUEST_PERMISSION_LOCATION = 1;
 
-    private double latitude;
-    private double longitude;
-
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button b_Submit = findViewById(R.id.submit);
         b_Submit.setOnClickListener(this);
 
-        mDatabase = FirebaseDatabase.getInstance();
-
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
     }
 
     public void onClick(View v) {
@@ -83,10 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onSuccess(Location location) {
                     if( location != null ) {
-                        // Implementation
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        Log.d("GPSSUCCESS",latitude + " " + longitude);
+                        DatabaseReference databaseWrite;
+
+                        // push() creates a unique key each time it is called
+                        databaseWrite = databaseReference.push();
+
+                        // Write coordinates to the database
+                        databaseWrite.child("Latitude").setValue(location.getLatitude());
+                        databaseWrite.child("Longitude").setValue(location.getLongitude());
                     }
                     else {
                         Log.d("GPSFAIL", "Could not retrieve coordinates");
@@ -94,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-            mReference = mDatabase.getReference().push();
-            mReference.child("Latitude").setValue(latitude);
-            mReference.child("Longitude").setValue(longitude);
+
 
             // Generate QR code to store
 
