@@ -66,6 +66,7 @@ public class DisplayQR extends AppCompatActivity {
         final DatabaseReference databaseWrite;
         // push() creates a unique key
         databaseWrite = databaseReference.push();
+        databaseWrite.child("Name").setValue(name);
         databaseWrite.child("Latitude").setValue(latitude);
         databaseWrite.child("Longitude").setValue(longitude);
 
