@@ -4,28 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".DisplayQR">
 
-    <EditText
-        android:id="@+id/form_name"
-        android:inputType="text"
-        android:hint="@string/form_name_hint"
-        android:importantForAutofill="no"
+    <ImageView
+        android:id="@+id/imview_qrImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/submit"
+        app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
-    </EditText>
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/submit"
-        android:text="@string/button_submit"
+        android:id="@+id/back"
+        android:text="@string/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_name"
+        app:layout_constraintTop_toBottomOf="@+id/imview_qrImage"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
