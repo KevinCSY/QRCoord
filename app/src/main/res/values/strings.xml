@@ -1,7 +1,16 @@
 <resources>
+    <!-- General -->
     <string name="app_name">QRCoord</string>
     <string name="title_location_permission">Request GPS location</string>
     <string name="text_location_permission">Need permission to retrieve GPS coordinates</string>
+    <string name="title_activity_display_q_r">Activity DisplayQR</string>
+
+    <!-- Buttons -->
     <string name="button_confirm">OK</string>
     <string name="button_submit">submit</string>
+    <string name="button_back">Go back</string>
+
+    <!-- Forms -->
+    <string name="form_name_hint">Input name here…</string>
+
 </resources>
