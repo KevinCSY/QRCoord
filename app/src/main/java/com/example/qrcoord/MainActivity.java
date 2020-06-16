@@ -23,6 +23,11 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
 
+    // UI
+    private Button submitButton;
+    private EditText nameField;
+
+    // Permission
     private final int REQUEST_PERMISSION_LOCATION = 1;
 
     @Override
@@ -30,17 +35,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button submitButton = findViewById(R.id.submit);
-        final EditText nameField = findViewById(R.id.form_name);
+        submitButton = findViewById(R.id.submit);
+        nameField = findViewById(R.id.form_name);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // Retrieve String from the form
                 final String name = nameField.getText().toString();
 
-                // Submit GPS coordinates to server
+                // Check GPS acces permissions
                 if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
+                    // Check if reason of request should be shown
                     if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                             Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -59,14 +66,16 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .create()
                                 .show();
+                    }
 
-                    } else {
-                        // No explanation needed, we can request the permission.
+                    // No explanation needed, we can request the permission.
+                    else {
                         ActivityCompat.requestPermissions(MainActivity.this,
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                 REQUEST_PERMISSION_LOCATION);
                     }
                 }
+                // Permission granted
                 else {
                     FusedLocationProviderClient fusedLocationClient;
                     fusedLocationClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
+                            // Valid location retrieved
                             if( location != null ) {
                                 transitionToDisplayQR(location.getLatitude(), location.getLongitude(), name);
                             }
@@ -88,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Call the activity which handles encoding and displaying the QR
     private void transitionToDisplayQR(double latitude, double longitude, String name) {
         Intent intent = new Intent(this, DisplayQR.class);
         intent.putExtra("latitude", latitude);
